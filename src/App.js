@@ -48,7 +48,7 @@ class App extends Component {
         this.state = {
             flsk: 'red_1000_',
             group: group,
-            arActive: true,
+            arActive: false,
         };
         this.changeFlsk = this.changeFlsk.bind(this);
         this.toggleAR = this.toggleAR.bind(this);
