@@ -50,6 +50,8 @@ class App extends Component {
             group: group,
             arActive: false,
         };
+        window.flsk = this.state.flsk;
+
         this.changeFlsk = this.changeFlsk.bind(this);
         this.toggleAR = this.toggleAR.bind(this);
     };
@@ -69,7 +71,7 @@ class App extends Component {
                 <Header group={this.state.group}/>
                 <div style={{ height: 'calc(100% - 112px)', width: '100%' }}>
                     {this.state.arActive
-                        ? <ARComponent/>
+                        ? <ARComponent flsk={this.state.flsk}/>
                         : <div>
                             <Carousel flsk={this.state.flsk}
                                       group={this.state.group}/>

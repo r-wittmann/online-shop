@@ -67,10 +67,10 @@
     });
 
     function onResize() {
-        arToolkitSource.onResize();
-        arToolkitSource.copySizeTo(renderer.domElement);
+        arToolkitSource.onResizeElement();
+        arToolkitSource.copyElementSizeTo(renderer.domElement);
         if (arToolkitContext.arController !== null) {
-            arToolkitSource.copySizeTo(arToolkitContext.arController.canvas);
+            arToolkitSource.copyElementSizeTo(arToolkitContext.arController.canvas);
         }
     }
 
@@ -92,12 +92,18 @@
         camera.projectionMatrix.copy(arToolkitContext.getProjectionMatrix());
     });
 
+    let flsk = window.parent.flsk;
+
     onRenderFcts.push(function() {
         if (arToolkitSource.ready === false) return;
         arToolkitContext.update(arToolkitSource.domElement);
 
         scene.visible = camera.visible;
         document.getElementById('markerVisible').style.visibility = scene.visible ? 'hidden' : 'visible';
+        if (flsk !== window.parent.flsk) {
+            flsk = window.parent.flsk;
+            changeColor(flsk);
+        }
     });
 
     ////////////////////////////////////////////////////////////////////////////////
@@ -179,7 +185,29 @@
         }
     );
 
-    function changeColor(newColor) {
+    function changeColor(flskDefinition) {
+        let flskColor = flskDefinition.split('_')[0];
+        let flskSize = flskDefinition.split('_')[1];
+
+        let newColor;
+        switch (flskColor) {
+            case 'red':
+                newColor = 0xa02d3a;
+                break;
+            case 'midnight':
+                newColor = 0x2f3672;
+                break;
+            case 'lightblue':
+                newColor = 0x33a8ca;
+                break;
+            case 'white':
+                newColor = 0xe5e3e8;
+                break;
+            case 'black':
+                newColor = 0x212121;
+                break;
+        }
+
         bottleMaterial.color.setHex(newColor);
     }
 
