@@ -123,10 +123,10 @@
     //////////////////////////////////////////////////////////////////////////////////
 
     //TODO: Add better lighting
-    const ambientLight = new THREE.AmbientLight(0x404040);
+    const ambientLight = new THREE.AmbientLight(0x707070);
     scene.add(ambientLight);
 
-    const pointLight = new THREE.PointLight( 0x404040, 2, 50, 2 );
+    const pointLight = new THREE.PointLight( 0x606060, 2, 50, 2 );
     pointLight.position.set( 2, 2, 2 );
     scene.add(pointLight);
 
@@ -149,8 +149,8 @@
             scaleRotatePosition(cap);
 
             let material = new THREE.MeshPhongMaterial( {
-                color: 0xffffff,
-                specular:0xffffff,
+                color: 0x898989,
+                specular:0xcacaca,
                 flatShading: true,
                 combine: THREE.MultiplyOperation,
                 shininess: 50,
