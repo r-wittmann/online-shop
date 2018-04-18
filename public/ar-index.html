@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/three.js/91/three.min.js'></script>
+    <script src="https://cdn.rawgit.com/jeromeetienne/AR.js/1.5.0/three.js/build/ar.min.js"></script>
+    <script src="https://mamboleoo.be/learnThree/demos/OBJLoader.js"></script>
+
+    <script>THREEx.ArToolkitContext.baseURL = './'</script>
+
+    <style>
+        body {
+            margin : 0px;
+            height: 100%;
+            width: 100%;
+            overflow: hidden;
+        }
+    </style>
+</head>
+<body>
+<noscript>
+    You need to enable JavaScript to run this app.
+</noscript>
+<script>
+    //////////////////////////////////////////////////////////////////////////////////
+    //		Init
+    //////////////////////////////////////////////////////////////////////////////////
+
+    const renderer = new THREE.WebGLRenderer({
+        antialias: true,
+        alpha: true
+    });
+
+    renderer.setClearColor(new THREE.Color('lightgrey'), 0);
+    renderer.setSize(640, 480);
+    renderer.domElement.style.position = 'absolute';
+    renderer.domElement.style.top = '0px';
+    renderer.domElement.style.left = '0px';
+    document.body.appendChild(renderer.domElement);
+
+    // array of functions for the rendering loop
+    const onRenderFcts = [];
+
+    const scene = new THREE.Scene();
+
+    //////////////////////////////////////////////////////////////////////////////////
+    //		Initialize a basic camera
+    //////////////////////////////////////////////////////////////////////////////////
+
+    const camera = new THREE.Camera();
+    scene.add(camera);
+
+    ////////////////////////////////////////////////////////////////////////////////
+    //          handle arToolkitSource
+    ////////////////////////////////////////////////////////////////////////////////
+
+    const arToolkitSource = new THREEx.ArToolkitSource({
+        sourceType: 'webcam',
+    });
+    arToolkitSource.init(function onReady() {
+        onResize()
+    });
+
+    window.addEventListener('resize', function() {
+        onResize()
+    });
+
+    function onResize() {
+        arToolkitSource.onResize();
+        arToolkitSource.copySizeTo(renderer.domElement);
+        if (arToolkitContext.arController !== null) {
+            arToolkitSource.copySizeTo(arToolkitContext.arController.canvas);
+        }
+    }
+
+    ////////////////////////////////////////////////////////////////////////////////
+    //          initialize arToolkitContext
+    ////////////////////////////////////////////////////////////////////////////////
+
+    const arToolkitContext = new THREEx.ArToolkitContext({
+        debug: false,
+        cameraParametersUrl: THREEx.ArToolkitContext.baseURL + 'data/data/camera_para.dat',
+        detectionMode: 'color',
+        maxDetectionRate: 30,
+        imageSmoothingEnabled: true,
+        canvasWidth: 80*4,
+        canvasHeight: 60*4,
+    });
+
+    arToolkitContext.init(function onCompleted() {
+        camera.projectionMatrix.copy(arToolkitContext.getProjectionMatrix());
+    });
+
+    onRenderFcts.push(function() {
+        if (arToolkitSource.ready === false) return;
+        arToolkitContext.update(arToolkitSource.domElement);
+
+        scene.visible = camera.visible;
+        document.getElementById('markerVisible').style.visibility = scene.visible ? 'hidden' : 'visible';
+    });
+
+    ////////////////////////////////////////////////////////////////////////////////
+    //          Create a ArMarkerControls
+    ////////////////////////////////////////////////////////////////////////////////
+
+    const markerControls = new THREEx.ArMarkerControls(arToolkitContext, camera, {
+        type: 'pattern',
+        patternUrl: THREEx.ArToolkitContext.baseURL + 'data/data/patt.hiro',
+        changeMatrixMode: 'cameraTransformMatrix'
+    });
+
+    scene.visible = false;
+
+    //////////////////////////////////////////////////////////////////////////////////
+    //		add light to the scene
+    //////////////////////////////////////////////////////////////////////////////////
+
+    //TODO: Add better lighting
+    const ambientLight = new THREE.AmbientLight(0x404040);
+    scene.add(ambientLight);
+
+    const pointLight = new THREE.PointLight( 0x404040, 2, 50, 2 );
+    pointLight.position.set( 2, 2, 2 );
+    scene.add(pointLight);
+
+    //////////////////////////////////////////////////////////////////////////////////
+    //		add an object in the scene
+    //////////////////////////////////////////////////////////////////////////////////
+
+    const loader = new THREE.OBJLoader();
+
+    function scaleRotatePosition(object) {
+        object.scale.set(0.04, 0.04, 0.02);
+        object.rotateX(-1.65);
+        object.position.z = -0.5;
+    }
+
+    loader.load(
+        THREEx.ArToolkitContext.baseURL + 'data/models/TestBottleCap/tinker.obj',
+        function(cap) {
+
+            scaleRotatePosition(cap);
+
+            let material = new THREE.MeshPhongMaterial( {
+                color: 0xffffff,
+                specular:0xffffff,
+                flatShading: true,
+                combine: THREE.MultiplyOperation,
+                shininess: 50,
+                reflectivity: 1.0
+            } );
+
+            cap.traverse(function(child) {
+                if (child instanceof THREE.Mesh) {
+                    child.material = material;
+                }
+            });
+            scene.add(cap);
+        }
+    );
+
+    let bottleMaterial = new THREE.MeshLambertMaterial({
+        color: 0xff0000
+    });
+
+    loader.load(
+        THREEx.ArToolkitContext.baseURL + 'data/models/TestBottle/tinker.obj',
+        function(object) {
+
+            scaleRotatePosition(object);
+
+            object.traverse(function(child) {
+                if (child instanceof THREE.Mesh) {
+                    child.material = bottleMaterial;
+                }
+            });
+            scene.add(object);
+        }
+    );
+
+    function changeColor(newColor) {
+        bottleMaterial.color.setHex(newColor);
+    }
+
+    //////////////////////////////////////////////////////////////////////////////////
+    //		render the whole thing on the page
+    //////////////////////////////////////////////////////////////////////////////////
+
+    onRenderFcts.push(function() {
+        renderer.render(scene, camera);
+    });
+
+    // run the rendering loop
+    let lastTimeMsec = null;
+    requestAnimationFrame(function animate(nowMsec) {
+        requestAnimationFrame(animate);
+        lastTimeMsec = lastTimeMsec || nowMsec - 1000 / 60;
+        const deltaMsec = Math.min(200, nowMsec - lastTimeMsec);
+        lastTimeMsec = nowMsec;
+
+        onRenderFcts.forEach(function(onRenderFct) {
+            onRenderFct(deltaMsec / 1000, nowMsec / 1000);
+        });
+    });
+</script>
+<div id="markerVisible" style="position: absolute; bottom: 5rem; text-align: center; width: 100%;">
+    <div style="width: 15rem; background-color: rgba(255,255,255,0.8); margin: auto; padding: 8px;">
+        ecm-Marker wird gesucht
+        <img src="./ecm-marker.png" width="128px" height="128px" style="margin-top: 16px;"/>
+    </div>
+</div>
+</body>
+</html>
