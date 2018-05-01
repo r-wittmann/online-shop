@@ -6,12 +6,13 @@
     <script src='https://cdnjs.cloudflare.com/ajax/libs/three.js/91/three.min.js'></script>
     <script src="https://cdn.rawgit.com/jeromeetienne/AR.js/1.5.0/three.js/build/ar.min.js"></script>
     <script src="https://mamboleoo.be/learnThree/demos/OBJLoader.js"></script>
+    <script src="./resources/STLLoader.js"></script>
 
     <script>THREEx.ArToolkitContext.baseURL = './'</script>
 
     <style>
         body {
-            margin : 0px;
+            margin: 0px;
             height: 100%;
             width: 100%;
             overflow: hidden;
@@ -84,8 +85,8 @@
         detectionMode: 'color',
         maxDetectionRate: 30,
         imageSmoothingEnabled: true,
-        canvasWidth: 80*4,
-        canvasHeight: 60*4,
+        canvasWidth: 80 * 4,
+        canvasHeight: 60 * 4,
     });
 
     arToolkitContext.init(function onCompleted() {
@@ -126,42 +127,39 @@
     const ambientLight = new THREE.AmbientLight(0x707070);
     scene.add(ambientLight);
 
-    const pointLight = new THREE.PointLight( 0x606060, 2, 50, 2 );
-    pointLight.position.set( 2, 2, 2 );
+    const pointLight = new THREE.PointLight(0x606060, 2, 50, 2);
+    pointLight.position.set(2, 2, 2);
     scene.add(pointLight);
 
     //////////////////////////////////////////////////////////////////////////////////
     //		add an object in the scene
     //////////////////////////////////////////////////////////////////////////////////
 
-    const loader = new THREE.OBJLoader();
+    const loader = new THREE.STLLoader();
 
     function scaleRotatePosition(object) {
-        object.scale.set(0.04, 0.04, 0.02);
-        object.rotateX(-1.65);
-        object.position.z = -0.5;
+        object.scale.set(0.01, 0.01, 0.005);
+        object.rotateX(Math.PI / 2);
+        // object.position.z = -0.5;
     }
 
+
     loader.load(
-        THREEx.ArToolkitContext.baseURL + 'data/models/TestBottleCap/tinker.obj',
-        function(cap) {
-
-            scaleRotatePosition(cap);
-
-            let material = new THREE.MeshPhongMaterial( {
+        THREEx.ArToolkitContext.baseURL + 'data/models/STLBottle/cap.stl',
+        function(geometry) {
+            let capMaterial = new THREE.MeshPhongMaterial({
                 color: 0x898989,
-                specular:0xcacaca,
+                specular: 0xcacaca,
                 flatShading: true,
                 combine: THREE.MultiplyOperation,
                 shininess: 50,
                 reflectivity: 1.0
-            } );
-
-            cap.traverse(function(child) {
-                if (child instanceof THREE.Mesh) {
-                    child.material = material;
-                }
             });
+
+            let cap = new THREE.Mesh(geometry, capMaterial);
+
+            scaleRotatePosition(cap);
+
             scene.add(cap);
         }
     );
@@ -171,20 +169,16 @@
     });
 
     loader.load(
-        THREEx.ArToolkitContext.baseURL + 'data/models/TestBottle/tinker.obj',
-        function(object) {
+        THREEx.ArToolkitContext.baseURL + 'data/models/STLBottle/bottle.stl',
+        function(geometry) {
 
-            scaleRotatePosition(object);
+            let bottle = new THREE.Mesh(geometry, bottleMaterial);
 
-            object.traverse(function(child) {
-                if (child instanceof THREE.Mesh) {
-                    child.material = bottleMaterial;
-                }
-            });
-            scene.add(object);
+            scaleRotatePosition(bottle);
+
+            scene.add(bottle);
             changeColor(flsk);
-        }
-    );
+        });
 
     function changeColor(flskDefinition) {
         let flskColor = flskDefinition.split('_')[0];
