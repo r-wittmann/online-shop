@@ -4,7 +4,7 @@ class Description extends Component {
     render() {
         return (
             <div style={{ padding: '36px 16px' }}>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+                Höchste Qualität und modernstes Design: Die erste Flasche, die höchste Isolierleistung mit puristischem Design kombiniert. Leicht, handlich und geschmacksneutral. Hält bis zu 24 Stunden kalt und 18 Stunden heiß
             </div>
         );
     }

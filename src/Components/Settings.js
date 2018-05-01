@@ -5,7 +5,7 @@ const colors = [
     { key: 'midnight', name: 'MDNGHT', code: '2f3672' },
     { key: 'lightblue', name: 'CRBBN', code: '33a8ca' },
     { key: 'white', name: 'WHTE', code: 'e5e3e8' },
-    { key: 'black', name: 'BLCK', code: '212121' }
+    { key: 'black', name: 'BLCK', code: '262826' }
 ];
 
 const sizes = [
@@ -102,16 +102,23 @@ class Settings extends Component {
                                 {colors.map(color => {
                                     return <div key={color.key} style={{
                                         display: 'flex',
-                                        justifyContent: 'flex-end',
+                                        justifyContent: 'space-between',
                                         alignItems: 'center',
-                                        marginBottom: 16
+                                        border: '2px solid #262826',
+                                        borderRadius: 40,
+                                        marginBottom: 16,
+                                        backgroundColor: this.state.currentColor === color.key ? '#262826' : 'transparent',
+
                                     }}
                                                 onClick={(event) => this.handleColorPick(event, color.key)}>
-                                        <div style={{ marginRight: 8 }}>{color.name}</div>
+                                        <div style={{
+                                            marginRight: 8,
+                                            marginLeft: 20,
+                                            color: this.state.currentColor === color.key ? 'white' : 'black',
+                                        }}>{color.name}</div>
                                         <div style={{
                                             width: 40,
                                             height: 40,
-                                            border: '2px solid #262826',
                                             borderRadius: 40,
                                             backgroundColor: '#' + color.code,
                                         }}/>
@@ -120,37 +127,56 @@ class Settings extends Component {
                             </div>
                         </div>
                         }
-                        </div>
+                    </div>
                 </div>
                 }
-                <div style={{ position: 'absolute', bottom: 56, right: 8, backgroundColor: 'rgba(255,255,255,0.9' }}>
-
-                </div>
                 <div style={{
                     position: 'absolute',
                     bottom: 0,
                     width: '100%',
                     display: 'flex',
-                    flexDirection: 'row',
-                    justifyContent: 'space-around',
                     height: 56,
                     alignItems: 'center'
                 }}
                      className='py-2'>
-                    {this.props.group > 2 &&
                     <div style={{
+                        width: 'calc(200vw / 7)',
+                        display: 'flex',
                         border: '2px solid #262826',
                         borderRadius: 40,
                         padding: '4px 16px',
+                        marginLeft: 4,
+                        justifyContent: 'center'
+                    }}
+                         onClick={() => {
+                         }}>
+                        Weiter
+                    </div>
+                    <div style={{
+                        width: 'calc(300vw / 7)',
+                        display: 'flex',
+                        visibility: this.props.group > 2 ? 'show' : 'hidden',
+                        border: '2px solid #262826',
+                        borderRadius: 40,
+                        padding: '4px 16px',
+                        marginLeft: 4,
+                        justifyContent: 'center'
                     }}
                          onClick={() => this.props.toggleAR()}>
-                        {this.props.arActive ? 'Augmented Reality beenden' : 'Augmented Reality starten'}
+                        {this.props.arActive ? 'AR beenden' : 'AR starten'}
                     </div>
-                    }
-                    <div style={{ borderRadius: 60, padding: 4 }}
+                    <div style={{
+                        width: 'calc(200vw / 7)',
+                        display: 'flex',
+                        border: '2px solid #262826',
+                        borderRadius: 40,
+                        padding: '4px 16px',
+                        marginLeft: 4,
+                        marginRight: 4,
+                        justifyContent: 'center'
+                    }}
                          onClick={() => this.handleSettingClick()}>
-                    <span
-                        className='material-icons md-24'>{this.state.settingsVisible ? 'close' : 'brush'}</span>
+                        {this.state.settingsVisible ? 'X' : 'Optionen'}
                     </div>
                 </div>
             </div>

@@ -70,14 +70,16 @@ class App extends Component {
             <div style={{ height: '100%', width: '100%' }}>
                 <Header group={this.state.group}/>
                 <div style={{ height: 'calc(100% - 112px)', width: '100%' }}>
-                    {this.state.arActive
-                        ? <ARComponent flsk={this.state.flsk}/>
-                        : <div>
+                    {!this.state.arActive &&
+                        <div>
                             <Carousel flsk={this.state.flsk}
                                       group={this.state.group}/>
                             <Description/>
                         </div>
                     }
+                    <div style={{ height: this.state.arActive ? null : 0, width: this.state.arActive ? null : 0 }}>
+                        <ARComponent flsk={this.state.flsk}/>
+                    </div>
                 </div>
                 <Settings changeFlsk={this.changeFlsk}
                           arActive={this.state.arActive}
