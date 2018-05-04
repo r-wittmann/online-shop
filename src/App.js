@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
-import Header from './Components/Header';
+// import Header from './Components/Header';
 import Carousel from './Components/Carousel';
 import Settings from './Components/Settings';
 import Description from './Components/Description';
+import ARComponent from './Components/ARComponent';
 
 import qs from 'query-string';
-import ARComponent from "./Components/ARComponent";
 
 /**
  * interactivity |   low   |  high
@@ -21,6 +21,8 @@ import ARComponent from "./Components/ARComponent";
  */
 
 class App extends Component {
+    // TODO: check why the ar.js example works with a better perspective
+    // TODO: scale flsk according to selected size
     constructor(props) {
         super(props);
         let group = 1;
@@ -49,42 +51,76 @@ class App extends Component {
             flsk: 'red_1000_',
             group: group,
             arActive: false,
+            callback: qs.parse(window.location.search).callback,
+            flskChanges: 0,
+            arToggles: 0,
+            arRetentionRate: 0,
+            startTime: new Date(),
         };
         window.flsk = this.state.flsk;
 
         this.changeFlsk = this.changeFlsk.bind(this);
         this.toggleAR = this.toggleAR.bind(this);
+        this.endExperiment = this.endExperiment.bind(this);
     };
 
     changeFlsk(flsk) {
         window.flsk = flsk;
-        this.setState({ flsk });
+        this.setState({ flsk, flskChanges: this.state.flskChanges + 1 });
     }
 
     toggleAR() {
-        this.setState({ arActive: !this.state.arActive })
+        if (this.state.arActive) {
+            let arRetentionRate = (new Date() - this.state.arStartTime) / 1000;
+            this.setState({ arRetentionRate: this.state.arRetentionRate + arRetentionRate })
+        } else {
+            this.setState({ arStartTime: new Date() })
+        }
+        this.setState({ arActive: !this.state.arActive, arToggles: this.state.arToggles + 1 });
+    }
+
+    endExperiment() {
+        let parameters = {
+            arToggles: this.state.arToggles,
+            flskChanges: this.state.flskChanges,
+            arRetentionRate: Math.round(this.state.arRetentionRate),
+            retentionRate: Math.round((new Date() - this.state.startTime) / 1000),
+        };
+
+        if (this.state.arActive) {
+            parameters.arRetentionRate += Math.round((new Date() - this.state.arStartTime) / 1000);
+        }
+
+        // window.location.href = this.state.callback + '/?' + qs.stringify(parameters)
+        console.log(this.state.callback + '/?' + qs.stringify(parameters));
     }
 
     render() {
         return (
             <div style={{ height: '100%', width: '100%' }}>
-                <Header group={this.state.group}/>
-                <div style={{ height: 'calc(100% - 112px)', width: '100%' }}>
-                    {!this.state.arActive &&
+                <div className={'content'}>
+                    {/*<Header group={this.state.group}/>*/}
+                    <div style={{ height: 'calc(100% - 58px)', width: '100%' }}>
+                        {!this.state.arActive &&
                         <div>
                             <Carousel flsk={this.state.flsk}
                                       group={this.state.group}/>
                             <Description/>
                         </div>
-                    }
-                    <div style={{ height: this.state.arActive ? null : 0, width: this.state.arActive ? null : 0 }}>
-                        <ARComponent flsk={this.state.flsk}/>
+                        }
+                        <div style={{ height: this.state.arActive ? null : 0, width: this.state.arActive ? null : 0 }}>
+                            <ARComponent flsk={this.state.flsk}/>
+                        </div>
                     </div>
+                    <Settings changeFlsk={this.changeFlsk}
+                              arActive={this.state.arActive}
+                              toggleAR={this.toggleAR}
+                              group={this.state.group}
+                              endExperiment={this.endExperiment}/>
                 </div>
-                <Settings changeFlsk={this.changeFlsk}
-                          arActive={this.state.arActive}
-                          toggleAR={this.toggleAR}
-                          group={this.state.group}/>
+                <div className={'error-message'}>
+                    Bitte das Handy im Hochformat benutzen
+                </div>
             </div>
         );
     }

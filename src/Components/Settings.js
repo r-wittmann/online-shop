@@ -15,6 +15,12 @@ const sizes = [
 ];
 
 class Settings extends Component {
+    constructor(props) {
+        super(props);
+
+        this.handleExitClick = this.handleExitClick.bind(this);
+    }
+
     state = {
         settingsVisible: false,
         currentColor: 'red',
@@ -39,6 +45,12 @@ class Settings extends Component {
 
     changeFlsk() {
         this.props.changeFlsk(`${this.state.currentColor}_${this.state.currentSize}_`)
+    }
+
+    handleExitClick() {
+        if(window.confirm('Wollen Sie das Experiment wirklich beenden?')) {
+            this.props.endExperiment();
+        }
     }
 
     render() {
@@ -148,8 +160,7 @@ class Settings extends Component {
                         marginLeft: 4,
                         justifyContent: 'center'
                     }}
-                         onClick={() => {
-                         }}>
+                         onClick={this.handleExitClick}>
                         Weiter
                     </div>
                     <div style={{

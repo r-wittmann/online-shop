@@ -3,3 +3,18 @@ body {
   padding: 0;
   font-family: sans-serif;
 }
+
+@media screen and (orientation: landscape) {
+  .content {
+    display: none;
+  }
+  .error-message {
+    margin: 25px;
+  }
+}
+
+@media screen and (orientation: portrait) {
+  .error-message {
+    display: none;
+  }
+}
