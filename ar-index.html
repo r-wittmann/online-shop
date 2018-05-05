@@ -123,13 +123,20 @@
     //		add light to the scene
     //////////////////////////////////////////////////////////////////////////////////
 
-    //TODO: Add better lighting
-    const ambientLight = new THREE.AmbientLight(0x707070);
+    const ambientLight = new THREE.AmbientLight(0xaaaaaa, 0.5);
     scene.add(ambientLight);
 
-    const pointLight = new THREE.PointLight(0x606060, 2, 50, 2);
-    pointLight.position.set(2, 2, 2);
+    const hemiLight = new THREE.HemisphereLight( 0xffffff, 0xffffff, 0.1 );
+    hemiLight.position.set( 0, 500, 0 );
+    scene.add( hemiLight );
+
+    const pointLight = new THREE.PointLight(0x606060, 1.5, 50, 2);
+    pointLight.position.set(3, 2, 2);
     scene.add(pointLight);
+
+    const pointLight2 = new THREE.PointLight(0x606060, 1.5, 50, 2);
+    pointLight2.position.set(-3, 2, 2);
+    scene.add(pointLight2);
 
     //////////////////////////////////////////////////////////////////////////////////
     //		add an object in the scene
@@ -138,21 +145,19 @@
     const loader = new THREE.STLLoader();
 
     function scaleRotatePosition(object) {
-        object.scale.set(0.01, 0.01, 0.005);
-        object.rotateX(Math.PI / 2);
-        // object.position.z = -0.5;
+        object.scale.set(0.01, 0.01, 0.006);
+        object.rotateX(1.4);
     }
-
 
     loader.load(
         THREEx.ArToolkitContext.baseURL + 'data/models/STLBottle/cap.stl',
         function(geometry) {
             let capMaterial = new THREE.MeshPhongMaterial({
-                color: 0x898989,
-                specular: 0xcacaca,
-                flatShading: true,
+                color: 0x656565,
+                specular: 0xffffff,
+                emissive: 0x101010,
                 combine: THREE.MultiplyOperation,
-                shininess: 50,
+                shininess: 100,
                 reflectivity: 1.0
             });
 
@@ -182,15 +187,14 @@
 
     function changeColor(flskDefinition) {
         let flskColor = flskDefinition.split('_')[0];
-        let flskSize = flskDefinition.split('_')[1];
 
         let newColor;
         switch (flskColor) {
             case 'red':
-                newColor = 0xa02d3a;
+                newColor = 0x81242f;
                 break;
             case 'midnight':
-                newColor = 0x2f3672;
+                newColor = 0x292f64;
                 break;
             case 'lightblue':
                 newColor = 0x33a8ca;
