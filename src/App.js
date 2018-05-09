@@ -22,7 +22,6 @@ import qs from 'query-string';
 
 class App extends Component {
     // TODO: check why the ar.js example works with a better perspective
-    // TODO: scale flsk according to selected size
     constructor(props) {
         super(props);
         let group = 1;
