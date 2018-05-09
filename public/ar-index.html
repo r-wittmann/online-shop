@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
     <script src='https://cdnjs.cloudflare.com/ajax/libs/three.js/91/three.min.js'></script>
-    <script src="https://cdn.rawgit.com/jeromeetienne/AR.js/1.5.0/three.js/build/ar.min.js"></script>
+    <script src="https://cdn.rawgit.com/jeromeetienne/AR.js/master/three.js/build/ar.min.js"></script>
     <script src="./resources/STLLoader.js"></script>
 
     <script>THREEx.ArToolkitContext.baseURL = './'</script>
@@ -130,11 +130,11 @@
     scene.add( hemiLight );
 
     const pointLight = new THREE.PointLight(0x606060, 1.5, 50, 2);
-    pointLight.position.set(3, 2, 2);
+    pointLight.position.set(3, 2, -3);
     scene.add(pointLight);
 
     const pointLight2 = new THREE.PointLight(0x606060, 1.5, 50, 2);
-    pointLight2.position.set(-3, 2, 2);
+    pointLight2.position.set(-3, 2, -3);
     scene.add(pointLight2);
 
     //////////////////////////////////////////////////////////////////////////////////
@@ -143,21 +143,22 @@
 
     const loader = new THREE.STLLoader();
 
-    function scaleObject(object, size) {
-        object.scale.set(0.01, 0.01, 0.006);
-
+    function scaleObject(size) {
         switch (size) {
             case '1000':
-                bottle.scale.set(0.0095, 0.0095, 0.006);
-                cap.position.set(0, -0.01, 0.01);
+                bottle.scale.set(0.0112, 0.0112, 0.013);
+                cap.scale.set(0.012, 0.012, 0.011);
+                cap.position.set(0, 0, -0.4);
                 break;
             case '750':
-                bottle.scale.set(0.009, 0.009, 0.005);
-                cap.position.set(0, -0.23, 0.04);
+                bottle.scale.set(0.0097, 0.0097, 0.01);
+                cap.scale.set(0.0115, 0.0115, 0.011);
+                cap.position.set(0, 0, 0.25);
                 break;
             case '500':
-                bottle.scale.set(0.0085, 0.0085, 0.004);
-                cap.position.set(0, -0.44, 0.06);
+                bottle.scale.set(0.0085, 0.0085, 0.009);
+                cap.scale.set(0.01, 0.01, 0.011);
+                cap.position.set(0, 0, 0.47);
                 break;
         }
     }
@@ -178,10 +179,10 @@
 
             cap = new THREE.Mesh(geometry, capMaterial);
 
-            cap.scale.set(0.01, 0.01, 0.006);
-            cap.rotateX(1.4);
+            cap.scale.set(0.0115, 0.0115, 0.011);
 
             scene.add(cap);
+            changeColor(flsk)
         }
     );
 
@@ -197,8 +198,7 @@
 
             bottle = new THREE.Mesh(geometry, bottleMaterial);
 
-            scaleObject(bottle);
-            bottle.rotateX(1.4);
+            scaleObject();
 
             scene.add(bottle);
             changeColor(flsk);
@@ -227,7 +227,7 @@
                 break;
         }
 
-        scaleObject(bottle, flskSize);
+        scaleObject(flskSize);
         bottleMaterial.color.setHex(newColor);
     }
 
