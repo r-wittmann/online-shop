@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
     <script src='https://cdnjs.cloudflare.com/ajax/libs/three.js/91/three.min.js'></script>
     <script src="https://cdn.rawgit.com/jeromeetienne/AR.js/1.5.0/three.js/build/ar.min.js"></script>
-    <script src="https://mamboleoo.be/learnThree/demos/OBJLoader.js"></script>
     <script src="./resources/STLLoader.js"></script>
 
     <script>THREEx.ArToolkitContext.baseURL = './'</script>
@@ -144,10 +143,26 @@
 
     const loader = new THREE.STLLoader();
 
-    function scaleRotatePosition(object) {
+    function scaleObject(object, size) {
         object.scale.set(0.01, 0.01, 0.006);
-        object.rotateX(1.4);
+
+        switch (size) {
+            case '1000':
+                bottle.scale.set(0.0095, 0.0095, 0.006);
+                cap.position.set(0, -0.01, 0.01);
+                break;
+            case '750':
+                bottle.scale.set(0.009, 0.009, 0.005);
+                cap.position.set(0, -0.23, 0.04);
+                break;
+            case '500':
+                bottle.scale.set(0.0085, 0.0085, 0.004);
+                cap.position.set(0, -0.44, 0.06);
+                break;
+        }
     }
+
+    let cap;
 
     loader.load(
         THREEx.ArToolkitContext.baseURL + 'data/models/STLBottle/cap.stl',
@@ -161,13 +176,16 @@
                 reflectivity: 1.0
             });
 
-            let cap = new THREE.Mesh(geometry, capMaterial);
+            cap = new THREE.Mesh(geometry, capMaterial);
 
-            scaleRotatePosition(cap);
+            cap.scale.set(0.01, 0.01, 0.006);
+            cap.rotateX(1.4);
 
             scene.add(cap);
         }
     );
+
+    let bottle;
 
     let bottleMaterial = new THREE.MeshLambertMaterial({
         color: 0xff0000
@@ -177,9 +195,10 @@
         THREEx.ArToolkitContext.baseURL + 'data/models/STLBottle/bottle.stl',
         function(geometry) {
 
-            let bottle = new THREE.Mesh(geometry, bottleMaterial);
+            bottle = new THREE.Mesh(geometry, bottleMaterial);
 
-            scaleRotatePosition(bottle);
+            scaleObject(bottle);
+            bottle.rotateX(1.4);
 
             scene.add(bottle);
             changeColor(flsk);
@@ -187,6 +206,7 @@
 
     function changeColor(flskDefinition) {
         let flskColor = flskDefinition.split('_')[0];
+        let flskSize = flskDefinition.split('_')[1];
 
         let newColor;
         switch (flskColor) {
@@ -207,6 +227,7 @@
                 break;
         }
 
+        scaleObject(bottle, flskSize);
         bottleMaterial.color.setHex(newColor);
     }
 
