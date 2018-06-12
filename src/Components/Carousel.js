@@ -11,30 +11,15 @@ class Carousel extends Component {
                              style={{ backgroundColor: 'lightgrey' }}>
                             <ol className='list-inline d-flex justify-content-center'
                                 style={{ position: 'absolute', left: 0, right: 0, bottom: -50, zIndex: 15 }}>
-                                <li data-target='#carouselIndicators' data-slide-to='0'
-                                    className='active list-inline-item border border-light'
-                                    style={{ backgroundColor: 'white' }}>
-                                    <img style={{ width: 52, height: 52 }} className='rounded'
-                                         src={ImageService.getImageUrl(`${this.props.flsk}1`)} alt='thumbnail 1'/>
-                                </li>
-                                <li data-target='#carouselIndicators' data-slide-to='1'
-                                    className='list-inline-item border border-light'
-                                    style={{ backgroundColor: 'white' }}>
-                                    <img style={{ width: 52, height: 52 }} className='rounded'
-                                         src={ImageService.getImageUrl(`${this.props.flsk}2`)} alt='thumbnail 2'/>
-                                </li>
-                                <li data-target='#carouselIndicators' data-slide-to='2'
-                                    className='list-inline-item border border-light'
-                                    style={{ backgroundColor: 'white' }}>
-                                    <img style={{ width: 52, height: 52 }} className='rounded'
-                                         src={ImageService.getImageUrl(`${this.props.flsk}3`)} alt='thumbnail 3'/>
-                                </li>
-                                <li data-target='#carouselIndicators' data-slide-to='3'
-                                    className='list-inline-item border border-light'
-                                    style={{ backgroundColor: 'white' }}>
-                                    <img style={{ width: 52, height: 52 }} className='rounded'
-                                         src={ImageService.getImageUrl(`${this.props.flsk}4`)} alt='thumbnail 4'/>
-                                </li>
+                                {[0,1,2,3].map(index =>
+                                    <li key={index} data-target='#carouselIndicators' data-slide-to={index}
+                                        className='active list-inline-item border border-light'
+                                        style={{ backgroundColor: 'white' }}
+                                        onClick={() => this.props.changeProductImage()}>
+                                        <img style={{ width: 52, height: 52 }} className='rounded'
+                                             src={ImageService.getImageUrl(`${this.props.flsk}${index + 1}`)} alt={`thumbnail ${index + 1}`}/>
+                                    </li>
+                                )}
                             </ol>
                             <div className='carousel-inner'>
                                 <div className='carousel-item active'>
@@ -63,12 +48,12 @@ class Carousel extends Component {
                                 </div>
                             </div>
                             <a className='carousel-control-prev' href='#carouselIndicators' role='button'
-                               data-slide='prev'>
+                               data-slide='prev' onClick={() => this.props.changeProductImage()}>
                                 <span className='carousel-control-prev-icon' aria-hidden='true'/>
                                 <span className='sr-only'>Previous</span>
                             </a>
                             <a className='carousel-control-next' href='#carouselIndicators' role='button'
-                               data-slide='next'>
+                               data-slide='next' onClick={() => this.props.changeProductImage()}>
                                 <span className='carousel-control-next-icon' aria-hidden='true'/>
                                 <span className='sr-only'>Next</span>
                             </a>
