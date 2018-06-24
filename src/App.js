@@ -50,7 +50,7 @@ class App extends Component {
             flsk: 'red_1000_',
             group: group,
             arActive: false,
-            callback: 'https://lmubwl.eu.qualtrics.com/jfe/form/SV_cwDfzXOusYuZFeR',
+            callback: 'https://lmubwl.eu.qualtrics.com/jfe/form/SV_cGFC0rtpIyXyHd3',
             flskChanges: 0,
             arToggles: 0,
             productImageChanges: 0,
