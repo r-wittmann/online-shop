@@ -86,6 +86,7 @@ class App extends Component {
 
     endExperiment() {
         let parameters = {
+            group: this.state.group,
             arToggles: this.state.arToggles,
             flskChanges: this.state.flskChanges,
             productImageChanges: this.state.productImageChanges,
