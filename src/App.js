@@ -50,7 +50,7 @@ class App extends Component {
             flsk: 'red_1000_',
             group: group,
             arActive: false,
-            callback: qs.parse(window.location.search).callback,
+            callback: 'https://lmubwl.eu.qualtrics.com/jfe/form/SV_cwDfzXOusYuZFeR',
             flskChanges: 0,
             arToggles: 0,
             productImageChanges: 0,
@@ -97,8 +97,8 @@ class App extends Component {
             parameters.arRetentionRate += Math.round((new Date() - this.state.arStartTime) / 1000);
         }
         //TODO: change once the callback mechanism is clear
-        // window.location.href = this.state.callback + '/?' + qs.stringify(parameters)
-        console.log(this.state.callback + '/?' + qs.stringify(parameters));
+        window.location.href = this.state.callback + '/?' + qs.stringify(parameters)
+        // console.log(this.state.callback + '/?' + qs.stringify(parameters));
     }
 
     render() {
