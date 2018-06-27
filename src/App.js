@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-// import Header from './Components/Header';
 import Carousel from './Components/Carousel';
 import Settings from './Components/Settings';
 import Description from './Components/Description';
@@ -21,7 +20,6 @@ import qs from 'query-string';
  */
 
 class App extends Component {
-    // TODO: check why the ar.js example works with a better perspective
     constructor(props) {
         super(props);
         let group = 1;
@@ -92,21 +90,19 @@ class App extends Component {
             productImageChanges: this.state.productImageChanges,
             arRetentionRate: Math.round(this.state.arRetentionRate),
             retentionRate: Math.round((new Date() - this.state.startTime) / 1000),
+            flsk: this.state.flsk
         };
 
         if (this.state.arActive) {
             parameters.arRetentionRate += Math.round((new Date() - this.state.arStartTime) / 1000);
         }
-        //TODO: change once the callback mechanism is clear
         window.location.href = this.state.callback + '/?' + qs.stringify(parameters)
-        // console.log(this.state.callback + '/?' + qs.stringify(parameters));
     }
 
     render() {
         return (
             <div style={{ height: '100%', width: '100%' }}>
                 <div className={'content'}>
-                    {/*<Header group={this.state.group}/>*/}
                     <div style={{ height: 'calc(100% - 58px)', width: '100%' }}>
                         {!this.state.arActive &&
                         <div>
@@ -116,9 +112,11 @@ class App extends Component {
                             <Description/>
                         </div>
                         }
+                        {this.state.group > 2 &&
                         <div style={{ height: this.state.arActive ? null : 0, width: this.state.arActive ? null : 0 }}>
                             <ARComponent flsk={this.state.flsk}/>
                         </div>
+                        }
                     </div>
                     <Settings changeFlsk={this.changeFlsk}
                               arActive={this.state.arActive}
@@ -127,7 +125,7 @@ class App extends Component {
                               endExperiment={this.endExperiment}/>
                 </div>
                 <div className={'error-message'}>
-                    Bitte das Handy im Hochformat benutzen
+                    Bitte ein Smartphone im Hochformat nutzen
                 </div>
             </div>
         );

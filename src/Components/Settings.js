@@ -48,7 +48,7 @@ class Settings extends Component {
     }
 
     handleExitClick() {
-        if(window.confirm('Wollen Sie das Experiment wirklich beenden?')) {
+        if(window.confirm('Haben Sie Ihre Entscheidung getroffen und wollen zum Fragebogen fortfahren?')) {
             this.props.endExperiment();
         }
     }
