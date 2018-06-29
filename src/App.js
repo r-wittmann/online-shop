@@ -45,7 +45,7 @@ class App extends Component {
                 break
         }
         this.state = {
-            flsk: 'red_1000_',
+            flsk: 'red_500_',
             group: group,
             arActive: false,
             callback: 'https://lmubwl.eu.qualtrics.com/jfe/form/SV_cGFC0rtpIyXyHd3',
@@ -64,6 +64,7 @@ class App extends Component {
     };
 
     changeFlsk(flsk) {
+        console.log(flsk);
         window.flsk = flsk;
         this.setState({ flsk, flskChanges: this.state.flskChanges + 1 });
     }

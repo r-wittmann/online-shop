@@ -24,7 +24,7 @@ class Settings extends Component {
     state = {
         settingsVisible: false,
         currentColor: 'red',
-        currentSize: 1000,
+        currentSize: 500,
     };
 
     handleColorPick(event, colorKey) {
