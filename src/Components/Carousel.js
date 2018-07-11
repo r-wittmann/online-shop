@@ -8,7 +8,7 @@ class Carousel extends Component {
                 {this.props.group % 2 === 0
                     ? (
                         <div id='carouselIndicators' className='carousel slide carousel-fade' data-interval='false'
-                             style={{ backgroundColor: 'lightgrey' }}>
+                             style={{ backgroundColor: 'lightgrey', maxHeight: '50vh' }}>
                             <ol className='list-inline d-flex justify-content-center'
                                 style={{ position: 'absolute', left: 0, right: 0, bottom: -50, zIndex: 15 }}>
                                 {[0,1,2,3].map(index =>
@@ -24,25 +24,25 @@ class Carousel extends Component {
                             <div className='carousel-inner'>
                                 <div className='carousel-item active'>
                                     <img className='d-block'
-                                         style={{ width: '80%', margin: 'auto' }}
+                                         style={{ maxWidth: '80%', margin: 'auto', maxHeight: '50vh' }}
                                          src={ImageService.getImageUrl(`${this.props.flsk}1`)}
                                          alt='First slide'/>
                                 </div>
                                 <div className='carousel-item'>
                                     <img className='d-block'
-                                         style={{ width: '80%', margin: 'auto' }}
+                                         style={{ maxWidth: '80%', margin: 'auto', maxHeight: '50vh' }}
                                          src={ImageService.getImageUrl(`${this.props.flsk}2`)}
                                          alt='Second slide'/>
                                 </div>
                                 <div className='carousel-item'>
                                     <img className='d-block'
-                                         style={{ width: '80%', margin: 'auto' }}
+                                         style={{ maxWidth: '80%', margin: 'auto', maxHeight: '50vh' }}
                                          src={ImageService.getImageUrl(`${this.props.flsk}3`)}
                                          alt='Third slide'/>
                                 </div>
                                 <div className='carousel-item'>
                                     <img className='d-block'
-                                         style={{ width: '80%', marginLeft: '20%' }}
+                                         style={{ maxWidth: '80%', marginLeft: '20%', maxHeight: '50vh' }}
                                          src={ImageService.getImageUrl(`${this.props.flsk}4`)}
                                          alt='Third slide'/>
                                 </div>
@@ -59,9 +59,9 @@ class Carousel extends Component {
                             </a>
                         </div>
                     ) : (
-                        <div style={{ backgroundColor: 'lightgrey' }}>
+                        <div style={{ backgroundColor: 'lightgrey', maxHeight: '50vh' }}>
                             <img className='d-block'
-                                 style={{ width: '80%', margin: 'auto' }}
+                                 style={{ maxWidth: '80%', margin: 'auto', maxHeight: '50vh' }}
                                  src={ImageService.getImageUrl(`${this.props.flsk}1`)}
                                  alt='First slide'/>
                         </div>

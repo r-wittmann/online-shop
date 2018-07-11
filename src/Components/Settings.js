@@ -148,7 +148,8 @@ class Settings extends Component {
                     width: '100%',
                     display: 'flex',
                     height: 56,
-                    alignItems: 'center'
+                    alignItems: 'center',
+                    backgroundColor: 'white'
                 }}
                      className='py-2'>
                     <div style={{
